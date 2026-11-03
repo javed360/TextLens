@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.TextLens.Midnight" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:windowBackground">#121820</item>
+        <item name="android:colorBackground">#121820</item>
+        <item name="colorSurface">#1B2430</item>
+        <item name="colorSurfaceVariant">#242F3D</item>
+        <item name="colorSurfaceContainer">#1B2430</item>
+        <item name="colorSurfaceContainerHighest">#242F3D</item>
+        <item name="colorOnSurface">#EAF0F6</item>
+        <item name="colorOnSurfaceVariant">#9FB0C3</item>
+        <item name="colorOutline">#32404F</item>
+        <item name="colorOutlineVariant">#32404F</item>
+        <item name="colorPrimary">#3FB8B0</item>
+        <item name="colorOnPrimary">#06201F</item>
+        <item name="colorPrimaryContainer">#242F3D</item>
+        <item name="colorOnPrimaryContainer">#EAF0F6</item>
+        <item name="colorSecondary">#3FB8B0</item>
+        <item name="colorOnSecondary">#06201F</item>
+        <item name="colorSecondaryContainer">#242F3D</item>
+        <item name="colorOnSecondaryContainer">#EAF0F6</item>
+        <item name="android:statusBarColor">#121820</item>
+        <item name="android:navigationBarColor">#121820</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <item name="colorError">@color/danger</item>
+    </style>
+
+    <style name="Theme.TextLens.Amoled" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:windowBackground">#07090B</item>
+        <item name="android:colorBackground">#07090B</item>
+        <item name="colorSurface">#11151A</item>
+        <item name="colorSurfaceVariant">#1A2027</item>
+        <item name="colorSurfaceContainer">#11151A</item>
+        <item name="colorSurfaceContainerHighest">#1A2027</item>
+        <item name="colorOnSurface">#F0F3F6</item>
+        <item name="colorOnSurfaceVariant">#8F9BA8</item>
+        <item name="colorOutline">#262E36</item>
+        <item name="colorOutlineVariant">#262E36</item>
+        <item name="colorPrimary">#8C9EFF</item>
+        <item name="colorOnPrimary">#0A0F2E</item>
+        <item name="colorPrimaryContainer">#1A2027</item>
+        <item name="colorOnPrimaryContainer">#F0F3F6</item>
+        <item name="colorSecondary">#8C9EFF</item>
+        <item name="colorOnSecondary">#0A0F2E</item>
+        <item name="colorSecondaryContainer">#1A2027</item>
+        <item name="colorOnSecondaryContainer">#F0F3F6</item>
+        <item name="android:statusBarColor">#07090B</item>
+        <item name="android:navigationBarColor">#07090B</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <item name="colorError">@color/danger</item>
+    </style>
+
+    <style name="Theme.TextLens.Forest" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:windowBackground">#0F1A14</item>
+        <item name="android:colorBackground">#0F1A14</item>
+        <item name="colorSurface">#17261E</item>
+        <item name="colorSurfaceVariant">#20362B</item>
+        <item name="colorSurfaceContainer">#17261E</item>
+        <item name="colorSurfaceContainerHighest">#20362B</item>
+        <item name="colorOnSurface">#E6F2EA</item>
+        <item name="colorOnSurfaceVariant">#93B0A0</item>
+        <item name="colorOutline">#2F4A3B</item>
+        <item name="colorOutlineVariant">#2F4A3B</item>
+        <item name="colorPrimary">#5FBF8A</item>
+        <item name="colorOnPrimary">#07210F</item>
+        <item name="colorPrimaryContainer">#20362B</item>
+        <item name="colorOnPrimaryContainer">#E6F2EA</item>
+        <item name="colorSecondary">#5FBF8A</item>
+        <item name="colorOnSecondary">#07210F</item>
+        <item name="colorSecondaryContainer">#20362B</item>
+        <item name="colorOnSecondaryContainer">#E6F2EA</item>
+        <item name="android:statusBarColor">#0F1A14</item>
+        <item name="android:navigationBarColor">#0F1A14</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <item name="colorError">@color/danger</item>
+    </style>
+
+    <style name="Theme.TextLens.Ocean" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:windowBackground">#0B1626</item>
+        <item name="android:colorBackground">#0B1626</item>
+        <item name="colorSurface">#12233B</item>
+        <item name="colorSurfaceVariant">#1B3354</item>
+        <item name="colorSurfaceContainer">#12233B</item>
+        <item name="colorSurfaceContainerHighest">#1B3354</item>
+        <item name="colorOnSurface">#E6EEF9</item>
+        <item name="colorOnSurfaceVariant">#94A9C4</item>
+        <item name="colorOutline">#284468</item>
+        <item name="colorOutlineVariant">#284468</item>
+        <item name="colorPrimary">#5AA2FF</item>
+        <item name="colorOnPrimary">#06182F</item>
+        <item name="colorPrimaryContainer">#1B3354</item>
+        <item name="colorOnPrimaryContainer">#E6EEF9</item>
+        <item name="colorSecondary">#5AA2FF</item>
+        <item name="colorOnSecondary">#06182F</item>
+        <item name="colorSecondaryContainer">#1B3354</item>
+        <item name="colorOnSecondaryContainer">#E6EEF9</item>
+        <item name="android:statusBarColor">#0B1626</item>
+        <item name="android:navigationBarColor">#0B1626</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <item name="colorError">@color/danger</item>
+    </style>
+
+    <style name="Theme.TextLens.Plum" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:windowBackground">#1A1220</item>
+        <item name="android:colorBackground">#1A1220</item>
+        <item name="colorSurface">#261A2E</item>
+        <item name="colorSurfaceVariant">#33233F</item>
+        <item name="colorSurfaceContainer">#261A2E</item>
+        <item name="colorSurfaceContainerHighest">#33233F</item>
+        <item name="colorOnSurface">#F3E9F7</item>
+        <item name="colorOnSurfaceVariant">#B7A0C2</item>
+        <item name="colorOutline">#47315A</item>
+        <item name="colorOutlineVariant">#47315A</item>
+        <item name="colorPrimary">#C98CE6</item>
+        <item name="colorOnPrimary">#2A0B38</item>
+        <item name="colorPrimaryContainer">#33233F</item>
+        <item name="colorOnPrimaryContainer">#F3E9F7</item>
+        <item name="colorSecondary">#C98CE6</item>
+        <item name="colorOnSecondary">#2A0B38</item>
+        <item name="colorSecondaryContainer">#33233F</item>
+        <item name="colorOnSecondaryContainer">#F3E9F7</item>
+        <item name="android:statusBarColor">#1A1220</item>
+        <item name="android:navigationBarColor">#1A1220</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <item name="colorError">@color/danger</item>
+    </style>
+
+    <style name="Theme.TextLens.Sand" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:windowBackground">#F5EFE6</item>
+        <item name="android:colorBackground">#F5EFE6</item>
+        <item name="colorSurface">#FFFBF5</item>
+        <item name="colorSurfaceVariant">#EADFCF</item>
+        <item name="colorSurfaceContainer">#FFFBF5</item>
+        <item name="colorSurfaceContainerHighest">#EADFCF</item>
+        <item name="colorOnSurface">#2B2418</item>
+        <item name="colorOnSurfaceVariant">#7A6C57</item>
+        <item name="colorOutline">#DDD0BC</item>
+        <item name="colorOutlineVariant">#DDD0BC</item>
+        <item name="colorPrimary">#B5651D</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#EADFCF</item>
+        <item name="colorOnPrimaryContainer">#2B2418</item>
+        <item name="colorSecondary">#B5651D</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="colorSecondaryContainer">#EADFCF</item>
+        <item name="colorOnSecondaryContainer">#2B2418</item>
+        <item name="android:statusBarColor">#F5EFE6</item>
+        <item name="android:navigationBarColor">#F5EFE6</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+        <item name="colorError">@color/danger</item>
+    </style>
+
+    <style name="Theme.TextLens.Mist" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:windowBackground">#F4F7FA</item>
+        <item name="android:colorBackground">#F4F7FA</item>
+        <item name="colorSurface">#FFFFFF</item>
+        <item name="colorSurfaceVariant">#E7EDF3</item>
+        <item name="colorSurfaceContainer">#FFFFFF</item>
+        <item name="colorSurfaceContainerHighest">#E7EDF3</item>
+        <item name="colorOnSurface">#1B2430</item>
+        <item name="colorOnSurfaceVariant">#5B6B7C</item>
+        <item name="colorOutline">#D7E0E8</item>
+        <item name="colorOutlineVariant">#D7E0E8</item>
+        <item name="colorPrimary">#1F7A7A</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#E7EDF3</item>
+        <item name="colorOnPrimaryContainer">#1B2430</item>
+        <item name="colorSecondary">#1F7A7A</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="colorSecondaryContainer">#E7EDF3</item>
+        <item name="colorOnSecondaryContainer">#1B2430</item>
+        <item name="android:statusBarColor">#F4F7FA</item>
+        <item name="android:navigationBarColor">#F4F7FA</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+        <item name="colorError">@color/danger</item>
+    </style>
+
+    <style name="Theme.TextLens.Mint" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:windowBackground">#EEF6F1</item>
+        <item name="android:colorBackground">#EEF6F1</item>
+        <item name="colorSurface">#FBFFFC</item>
+        <item name="colorSurfaceVariant">#DCEBE1</item>
+        <item name="colorSurfaceContainer">#FBFFFC</item>
+        <item name="colorSurfaceContainerHighest">#DCEBE1</item>
+        <item name="colorOnSurface">#14241B</item>
+        <item name="colorOnSurfaceVariant">#55705F</item>
+        <item name="colorOutline">#C7DCCF</item>
+        <item name="colorOutlineVariant">#C7DCCF</item>
+        <item name="colorPrimary">#2E8B57</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#DCEBE1</item>
+        <item name="colorOnPrimaryContainer">#14241B</item>
+        <item name="colorSecondary">#2E8B57</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="colorSecondaryContainer">#DCEBE1</item>
+        <item name="colorOnSecondaryContainer">#14241B</item>
+        <item name="android:statusBarColor">#EEF6F1</item>
+        <item name="android:navigationBarColor">#EEF6F1</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+        <item name="colorError">@color/danger</item>
+    </style>
+
+    <style name="Theme.TextLens" parent="Theme.TextLens.Midnight" />
+
+    <!-- Launch (opening) animation; switches to the user's chosen palette afterwards -->
+    <style name="Theme.TextLens.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#121820</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_icon_animated</item>
+        <item name="windowSplashScreenAnimationDuration">900</item>
+        <item name="postSplashScreenTheme">@style/Theme.TextLens</item>
+    </style>
+
+    <style name="Theme.TextLens.Transparent" parent="Theme.TextLens.Midnight">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+</resources>

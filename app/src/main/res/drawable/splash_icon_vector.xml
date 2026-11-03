@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="288dp"
+    android:height="288dp"
+    android:viewportWidth="288"
+    android:viewportHeight="288">
+    <path
+        android:name="ring"
+        android:pathData="M126,126m-52,0a52,52 0,1 1,104 0a52,52 0,1 1,-104 0"
+        android:strokeColor="#3FB8B0"
+        android:strokeWidth="10"
+        android:strokeLineCap="round"
+        android:trimPathEnd="1" />
+    <path
+        android:name="handle"
+        android:pathData="M163,163L194,194"
+        android:strokeColor="#3FB8B0"
+        android:strokeWidth="10"
+        android:strokeLineCap="round"
+        android:trimPathEnd="1" />
+    <path
+        android:name="lines"
+        android:pathData="M104,118L148,118M104,136L138,136"
+        android:strokeColor="#EAF0F6"
+        android:strokeWidth="8"
+        android:strokeLineCap="round"
+        android:trimPathEnd="1" />
+</vector>
