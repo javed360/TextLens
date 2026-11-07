@@ -21,7 +21,7 @@ import com.textlens.app.databinding.ActivityCameraBinding
 import kotlin.concurrent.thread
 
 /** Take a photo of a page, then OCR it (offline) and open the result screen. */
-class CameraCaptureActivity : AppCompatActivity() {
+class CameraCaptureActivity : BaseActivity() {
 
     private lateinit var b: ActivityCameraBinding
     private var imageCapture: ImageCapture? = null
@@ -66,13 +66,12 @@ class CameraCaptureActivity : AppCompatActivity() {
         b.btnCapture.isEnabled = false
         capture.takePicture(ContextCompat.getMainExecutor(this), object : ImageCapture.OnImageCapturedCallback() {
             override fun onCaptureSuccess(image: ImageProxy) {
-                val bmp: Bitmap
-                try {
+                val bmp: Bitmap = try {
                     val rotation = image.imageInfo.rotationDegrees
                     val raw = image.toBitmap()
                     // A 12 MP photo is huge for OCR and for the heap: rotate and shrink in ONE step.
-                    val scale = minOf(1f, 2600f / maxOf(raw.width, raw.height))
-                    bmp = if (rotation == 0 && scale >= 1f) raw
+                    val scale = minOf(1f, 2200f / maxOf(raw.width, raw.height))
+                    if (rotation == 0 && scale >= 1f) raw
                     else Bitmap.createBitmap(raw, 0, 0, raw.width, raw.height,
                         Matrix().apply { postRotate(rotation.toFloat()); postScale(scale, scale) }, true)
                 } catch (t: Throwable) {
@@ -97,10 +96,11 @@ class CameraCaptureActivity : AppCompatActivity() {
         val app = applicationContext
         thread {
             try {
-                OcrHelper.ensureData(app) { msg -> runOnUiThread { b.progressText.text = msg } }
-                runOnUiThread { b.progressText.setText(R.string.camera_recognizing) }
-                val text = OcrHelper.recognize(app, bmp)
+                val text = OcrEngine.recognize(app, bmp, enhance = true) { msg ->
+                    runOnUiThread { b.progressText.text = msg }
+                }
                 runOnUiThread {
+                    Toast.makeText(this, OcrEngine.lastInfo, Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this, ResultActivity::class.java).putExtra(ResultActivity.EXTRA_TEXT, text))
                     finish()
                 }
@@ -108,7 +108,7 @@ class CameraCaptureActivity : AppCompatActivity() {
                 runOnUiThread {
                     b.progressOverlay.visibility = View.GONE
                     b.btnCapture.isEnabled = true
-                    Toast.makeText(this, "OCR ব্যর্থ: ${t.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.err_ocr_failed, t.message ?: ""), Toast.LENGTH_LONG).show()
                 }
             }
         }

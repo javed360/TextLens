@@ -1,5 +1,8 @@
 package com.textlens.app
 
+import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.TranslatorOptions
@@ -38,16 +41,42 @@ object TranslateHelper {
         }
     }
 
+    private val main = Handler(Looper.getMainLooper())
+
+    /**
+     * Online + Gemini key saved + switch on  -> Gemini (better quality).
+     * Offline, or Gemini fails                -> offline ML Kit (as before).
+     * [onDone] always runs on the main thread.
+     */
     fun translate(
+        c: Context,
+        text: String,
+        target: String,
+        onDone: (Result<String>) -> Unit
+    ) {
+        val app = c.applicationContext
+        if (detect(text) == target) {
+            onDone(Result.success(text))
+            return
+        }
+        if (GeminiHelper.isConfigured(app) && GeminiHelper.isOnline(app)) {
+            Thread {
+                val r = runCatching { GeminiHelper.translate(app, text, target) }
+                main.post {
+                    if (r.isSuccess) onDone(r) else offline(text, target, onDone)
+                }
+            }.start()
+        } else {
+            offline(text, target, onDone)
+        }
+    }
+
+    private fun offline(
         text: String,
         target: String,
         onDone: (Result<String>) -> Unit
     ) {
         val source = detect(text)
-        if (source == target) {
-            onDone(Result.success(text))
-            return
-        }
         val translator = Translation.getClient(
             TranslatorOptions.Builder()
                 .setSourceLanguage(mk(source))

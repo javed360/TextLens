@@ -190,7 +190,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
-            android:text="ফিকহ বা ধর্মীয় বিষয়ের অনুবাদ কেবল বোঝার সহায়ক। চূড়ান্ত হুকুমের জন্য বিশ্বস্ত আলেমের সাথে যোগাযোগ করুন।"
+            android:text="@string/main_disclaimer"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="12sp" />
     </LinearLayout>

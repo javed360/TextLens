@@ -90,14 +90,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_weight="1"
-            android:text="নির্বাচিত অংশ নিন" />
+            android:text="@string/pdf_use_selection" />
     </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:text="লেখায় লম্বা চাপ দিয়ে অংশ সিলেক্ট করুন। কিছু সিলেক্ট না করলে পুরো পৃষ্ঠা যাবে।"
+        android:text="@string/pdf_hint"
         android:textColor="?attr/colorOnSurfaceVariant"
         android:textSize="12sp" />
 </LinearLayout>

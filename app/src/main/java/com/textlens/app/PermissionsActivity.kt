@@ -22,7 +22,7 @@ import com.google.android.material.color.MaterialColors
 import com.textlens.app.databinding.ActivityPermissionsBinding
 
 /** Live status of everything the app needs, with one-tap shortcuts to the right system screen. */
-class PermissionsActivity : AppCompatActivity() {
+class PermissionsActivity : BaseActivity() {
 
     private lateinit var b: ActivityPermissionsBinding
 
@@ -166,12 +166,8 @@ class PermissionsActivity : AppCompatActivity() {
         } else {
             AlertDialog.Builder(this)
                 .setTitle(R.string.perm_tile_title)
-                .setMessage(
-                    "১. স্ট্যাটাস বার দুইবার নিচে টানুন (Quick Settings)\n" +
-                        "২. নিচে পেন্সিল (Edit) আইকনে চাপুন\n" +
-                        "৩. তালিকা থেকে “TextLens বাবল” টাইলটা উপরের অংশে টেনে আনুন"
-                )
-                .setPositiveButton("ঠিক আছে", null)
+                .setMessage(R.string.tile_howto)
+                .setPositiveButton(R.string.btn_ok, null)
                 .show()
         }
     }

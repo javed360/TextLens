@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.textlens.app.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var b: ActivityMainBinding
     private val main = Handler(Looper.getMainLooper())
@@ -59,14 +59,14 @@ class MainActivity : AppCompatActivity() {
         val on = BubbleService.running
         val overlay = Settings.canDrawOverlays(this)
         b.tvStatus.text = when {
-            on -> "বাবল চালু আছে"
-            !overlay -> "প্রথমে Overlay permission দিন"
-            else -> "বাবল বন্ধ আছে"
+            on -> getString(R.string.status_bubble_on)
+            !overlay -> getString(R.string.status_need_overlay)
+            else -> getString(R.string.status_bubble_off)
         }
         b.tvStatusSub.text =
             if (!TextLensAccessibilityService.isEnabled(this)) getString(R.string.status_hint_a11y)
             else getString(R.string.status_ready)
-        b.btnToggle.text = if (on) "বাবল বন্ধ করুন" else "বাবল চালু করুন"
+        b.btnToggle.text = getString(if (on) R.string.btn_bubble_off else R.string.btn_bubble_on)
     }
 
     override fun onDestroy() {

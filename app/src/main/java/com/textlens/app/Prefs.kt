@@ -8,7 +8,11 @@ object Prefs {
     private const val FILE = "textlens_prefs"
 
     private fun sp(c: Context): SharedPreferences =
-        c.applicationContext.getSharedPreferences(FILE, Context.MODE_PRIVATE)
+        (c.applicationContext ?: c).getSharedPreferences(FILE, Context.MODE_PRIVATE)
+
+    /** In-app language: "bn" (default) or "en". */
+    fun appLang(c: Context): String = sp(c).getString("app_lang", "bn") ?: "bn"
+    fun setAppLang(c: Context, v: String) = sp(c).edit().putString("app_lang", v).apply()
 
     /** Selected colour theme id (see ThemeManager.palettes). Dark "midnight" by default. */
     fun palette(c: Context): String = sp(c).getString("palette", "midnight") ?: "midnight"
@@ -26,6 +30,19 @@ object Prefs {
     fun bubbleY(c: Context): Int = sp(c).getInt("bubble_y", -1)
     fun setBubblePos(c: Context, x: Int, y: Int) =
         sp(c).edit().putInt("bubble_x", x).putInt("bubble_y", y).apply()
+
+    /** Offline OCR language: "auto" (default), "ara", "ben" or "eng". */
+    fun ocrLang(c: Context): String = sp(c).getString("ocr_lang", "auto") ?: "auto"
+    fun setOcrLang(c: Context, v: String) = sp(c).edit().putString("ocr_lang", v).apply()
+
+    /** Optional online translation (Gemini). The key stays only on this phone. */
+    fun geminiOn(c: Context): Boolean = sp(c).getBoolean("gemini_on", true)
+    fun setGeminiOn(c: Context, v: Boolean) = sp(c).edit().putBoolean("gemini_on", v).apply()
+    fun geminiKey(c: Context): String = sp(c).getString("gemini_key", "") ?: ""
+    fun setGeminiKey(c: Context, v: String) = sp(c).edit().putString("gemini_key", v.trim()).apply()
+    fun geminiModel(c: Context): String =
+        sp(c).getString("gemini_model", GeminiHelper.DEFAULT_MODEL) ?: GeminiHelper.DEFAULT_MODEL
+    fun setGeminiModel(c: Context, v: String) = sp(c).edit().putString("gemini_model", v.trim()).apply()
 
     /** Last translation target: "bn", "en" or "ar". */
     fun targetLang(c: Context): String = sp(c).getString("target_lang", "bn") ?: "bn"

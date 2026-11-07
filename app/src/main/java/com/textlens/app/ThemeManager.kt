@@ -21,14 +21,14 @@ data class Palette(
 object ThemeManager {
 
     val palettes: List<Palette> = listOf(
-        Palette("midnight", "মিডনাইট", true, R.style.Theme_TextLens_Midnight, 0xFF121820.toInt(), 0xFF1B2430.toInt(), 0xFFEAF0F6.toInt(), 0xFF3FB8B0.toInt()),
-        Palette("amoled", "অ্যামোলেড", true, R.style.Theme_TextLens_Amoled, 0xFF07090B.toInt(), 0xFF11151A.toInt(), 0xFFF0F3F6.toInt(), 0xFF8C9EFF.toInt()),
-        Palette("forest", "ফরেস্ট", true, R.style.Theme_TextLens_Forest, 0xFF0F1A14.toInt(), 0xFF17261E.toInt(), 0xFFE6F2EA.toInt(), 0xFF5FBF8A.toInt()),
-        Palette("ocean", "ওশান", true, R.style.Theme_TextLens_Ocean, 0xFF0B1626.toInt(), 0xFF12233B.toInt(), 0xFFE6EEF9.toInt(), 0xFF5AA2FF.toInt()),
-        Palette("plum", "প্লাম", true, R.style.Theme_TextLens_Plum, 0xFF1A1220.toInt(), 0xFF261A2E.toInt(), 0xFFF3E9F7.toInt(), 0xFFC98CE6.toInt()),
-        Palette("sand", "স্যান্ড", false, R.style.Theme_TextLens_Sand, 0xFFF5EFE6.toInt(), 0xFFFFFBF5.toInt(), 0xFF2B2418.toInt(), 0xFFB5651D.toInt()),
-        Palette("mist", "মিস্ট", false, R.style.Theme_TextLens_Mist, 0xFFF4F7FA.toInt(), 0xFFFFFFFF.toInt(), 0xFF1B2430.toInt(), 0xFF1F7A7A.toInt()),
-        Palette("mint", "মিন্ট", false, R.style.Theme_TextLens_Mint, 0xFFEEF6F1.toInt(), 0xFFFBFFFC.toInt(), 0xFF14241B.toInt(), 0xFF2E8B57.toInt())
+        Palette("midnight", "Midnight", true, R.style.Theme_TextLens_Midnight, 0xFF121820.toInt(), 0xFF1B2430.toInt(), 0xFFEAF0F6.toInt(), 0xFF3FB8B0.toInt()),
+        Palette("amoled", "AMOLED", true, R.style.Theme_TextLens_Amoled, 0xFF07090B.toInt(), 0xFF11151A.toInt(), 0xFFF0F3F6.toInt(), 0xFF8C9EFF.toInt()),
+        Palette("forest", "Forest", true, R.style.Theme_TextLens_Forest, 0xFF0F1A14.toInt(), 0xFF17261E.toInt(), 0xFFE6F2EA.toInt(), 0xFF5FBF8A.toInt()),
+        Palette("ocean", "Ocean", true, R.style.Theme_TextLens_Ocean, 0xFF0B1626.toInt(), 0xFF12233B.toInt(), 0xFFE6EEF9.toInt(), 0xFF5AA2FF.toInt()),
+        Palette("plum", "Plum", true, R.style.Theme_TextLens_Plum, 0xFF1A1220.toInt(), 0xFF261A2E.toInt(), 0xFFF3E9F7.toInt(), 0xFFC98CE6.toInt()),
+        Palette("sand", "Sand", false, R.style.Theme_TextLens_Sand, 0xFFF5EFE6.toInt(), 0xFFFFFBF5.toInt(), 0xFF2B2418.toInt(), 0xFFB5651D.toInt()),
+        Palette("mist", "Mist", false, R.style.Theme_TextLens_Mist, 0xFFF4F7FA.toInt(), 0xFFFFFFFF.toInt(), 0xFF1B2430.toInt(), 0xFF1F7A7A.toInt()),
+        Palette("mint", "Mint", false, R.style.Theme_TextLens_Mint, 0xFFEEF6F1.toInt(), 0xFFFBFFFC.toInt(), 0xFF14241B.toInt(), 0xFF2E8B57.toInt())
     )
 
     private const val SYSTEM_DARK = "midnight"
@@ -61,5 +61,6 @@ object ThemeManager {
     }
 
     /** A themed context for views created outside an Activity (floating bubble and panels). */
-    fun themedContext(base: Context): Context = ContextThemeWrapper(base, themeRes(base))
+    fun themedContext(base: Context): Context =
+        ContextThemeWrapper(LocaleHelper.localized(base), themeRes(base))
 }

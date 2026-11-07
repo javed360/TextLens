@@ -49,6 +49,7 @@ class BubbleTileService : TileService() {
 
     private fun refresh() {
         val t = qsTile ?: return
+        t.label = LocaleHelper.str(this, R.string.tile_label)
         t.state = if (BubbleService.running) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
         t.updateTile()
     }

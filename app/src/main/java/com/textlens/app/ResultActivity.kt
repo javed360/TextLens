@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.textlens.app.databinding.ActivityResultBinding
 
 /** Shows recognised text (editable), with Copy / Share / Translate. */
-class ResultActivity : AppCompatActivity() {
+class ResultActivity : BaseActivity() {
 
     private lateinit var b: ActivityResultBinding
 
@@ -52,7 +52,7 @@ class ResultActivity : AppCompatActivity() {
         Prefs.setTargetLang(this, target)
         b.progress.visibility = View.VISIBLE
         b.btnTranslate.isEnabled = false
-        TranslateHelper.translate(text, target) { r ->
+        TranslateHelper.translate(this, text, target) { r ->
             b.progress.visibility = View.GONE
             b.btnTranslate.isEnabled = true
             r.onSuccess {
@@ -61,7 +61,7 @@ class ResultActivity : AppCompatActivity() {
             }.onFailure {
                 Toast.makeText(
                     this,
-                    "অনুবাদ ব্যর্থ। প্রথমবার ভাষার মডেল নামাতে ইন্টারনেট লাগে। (${it.message})",
+                    getString(R.string.err_translate_failed) + " (${it.message})",
                     Toast.LENGTH_LONG
                 ).show()
             }

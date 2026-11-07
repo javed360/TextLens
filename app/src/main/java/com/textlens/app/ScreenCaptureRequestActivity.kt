@@ -45,7 +45,7 @@ class ScreenCaptureRequestActivity : AppCompatActivity() {
         if (ok && bmp != null && svc != null) {
             svc.showSelection(bmp, mode)
         } else {
-            Toast.makeText(this, "স্ক্রিনশট নেওয়া যায়নি", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, LocaleHelper.str(this, R.string.toast_capture_failed), Toast.LENGTH_SHORT).show()
             BubbleService.show(this)
         }
         CaptureStore.bitmap = null

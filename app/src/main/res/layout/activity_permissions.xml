@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="16dp"
-            android:text="Overlay ও Battery অ্যাপ নিজে চালু করতে পারে না — বাটনে চাপলে সরাসরি সেই সেটিংসে নিয়ে যাবে।"
+            android:text="@string/perm_note"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="13sp" />
 

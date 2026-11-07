@@ -8,12 +8,11 @@ import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.card.MaterialCardView
 import com.textlens.app.databinding.ActivitySettingsBinding
 import kotlin.concurrent.thread
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : BaseActivity() {
 
     private lateinit var b: ActivitySettingsBinding
 
@@ -25,6 +24,19 @@ class SettingsActivity : AppCompatActivity() {
 
         buildPalettes()
 
+        // App language (Bengali / English). The change is applied to every screen, the floating
+        // panels, notifications and the Quick Settings tile label.
+        if (LocaleHelper.current(this) == LocaleHelper.EN) b.rbLangEn.isChecked = true
+        else b.rbLangBn.isChecked = true
+        b.rgAppLang.setOnCheckedChangeListener { _, id ->
+            val tag = if (id == R.id.rb_lang_en) LocaleHelper.EN else LocaleHelper.BN
+            if (tag != LocaleHelper.current(this)) {
+                Prefs.setAppLang(this, tag)
+                BubbleTileService.requestRefresh(this)
+                recreate()
+            }
+        }
+
         b.switchFollow.isChecked = Prefs.followSystem(this)
         b.switchFollow.setOnCheckedChangeListener { _, on ->
             Prefs.setFollowSystem(this, on)
@@ -35,8 +47,57 @@ class SettingsActivity : AppCompatActivity() {
         b.switchAutoCopy.isChecked = Prefs.autoCopy(this)
         b.switchAutoCopy.setOnCheckedChangeListener { _, on -> Prefs.setAutoCopy(this, on) }
 
+        b.switchGemini.isChecked = Prefs.geminiOn(this)
+        b.switchGemini.setOnCheckedChangeListener { _, on -> Prefs.setGeminiOn(this, on) }
+        b.etKey.setText(Prefs.geminiKey(this))
+        b.etModel.setText(Prefs.geminiModel(this))
+        b.btnGeminiSave.setOnClickListener { saveAndTestGemini() }
+
+        when (Prefs.ocrLang(this)) {
+            "ara" -> b.rbAra.isChecked = true
+            "ben" -> b.rbBen.isChecked = true
+            "eng" -> b.rbEng.isChecked = true
+            else -> b.rbAuto.isChecked = true
+        }
+        b.rgOcr.setOnCheckedChangeListener { _, id ->
+            Prefs.setOcrLang(
+                this, when (id) {
+                    R.id.rb_ara -> "ara"
+                    R.id.rb_ben -> "ben"
+                    R.id.rb_eng -> "eng"
+                    else -> "auto"
+                }
+            )
+        }
+
         refreshLangStatus()
         b.btnDownload.setOnClickListener { downloadLanguages() }
+    }
+
+    private fun saveAndTestGemini() {
+        Prefs.setGeminiKey(this, b.etKey.text.toString())
+        Prefs.setGeminiModel(this, b.etModel.text.toString().ifBlank { GeminiHelper.DEFAULT_MODEL })
+        if (Prefs.geminiKey(this).isBlank()) {
+            b.geminiStatus.text = getString(R.string.gemini_no_key)
+            return
+        }
+        if (!GeminiHelper.isOnline(this)) {
+            b.geminiStatus.text = getString(R.string.gemini_saved_offline)
+            return
+        }
+        b.geminiStatus.text = getString(R.string.gemini_testing)
+        b.btnGeminiSave.isEnabled = false
+        val app = applicationContext
+        thread {
+            val r = runCatching { GeminiHelper.translate(app, "Hello, how are you?", TranslateHelper.BN) }
+            runOnUiThread {
+                b.btnGeminiSave.isEnabled = true
+                b.geminiStatus.text = r.fold(
+                    { getString(R.string.gemini_ok, it) },
+                    { getString(R.string.gemini_fail, it.message ?: "") }
+                )
+            }
+        }
     }
 
     /** Each card previews a whole theme: its background, surface and accent. */
@@ -67,7 +128,7 @@ class SettingsActivity : AppCompatActivity() {
                 setPadding((14 * d).toInt(), (14 * d).toInt(), (14 * d).toInt(), (14 * d).toInt())
             }
             val name = TextView(this).apply {
-                text = p.name
+                text = getString(themeNameRes(p.id))
                 setTextColor(p.text)
                 textSize = 15f
                 setTypeface(typeface, android.graphics.Typeface.BOLD)
@@ -93,7 +154,7 @@ class SettingsActivity : AppCompatActivity() {
             card.addView(inner)
             card.setOnClickListener {
                 if (Prefs.followSystem(this)) {
-                    Toast.makeText(this, "আগে “ফোনের সেটিং অনুযায়ী” বন্ধ করুন", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, R.string.toast_turn_off_follow, Toast.LENGTH_SHORT).show()
                 } else if (p.id != Prefs.palette(this)) {
                     Prefs.setPalette(this, p.id)
                     ThemeManager.applyNightMode(this)
@@ -104,10 +165,22 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
+    /** Theme names come from string resources so they follow the app language. */
+    private fun themeNameRes(id: String): Int = when (id) {
+        "amoled" -> R.string.theme_amoled
+        "forest" -> R.string.theme_forest
+        "ocean" -> R.string.theme_ocean
+        "plum" -> R.string.theme_plum
+        "sand" -> R.string.theme_sand
+        "mist" -> R.string.theme_mist
+        "mint" -> R.string.theme_mint
+        else -> R.string.theme_midnight
+    }
+
     private fun refreshLangStatus() {
         val missing = OcrHelper.missing(this)
         b.langStatus.text = if (missing.isEmpty()) getString(R.string.lang_ready)
-        else "বাকি আছে: ${missing.joinToString(", ")}"
+        else getString(R.string.lang_missing, missing.joinToString(", "))
         b.btnDownload.visibility = if (missing.isEmpty()) View.GONE else View.VISIBLE
     }
 
@@ -124,7 +197,7 @@ class SettingsActivity : AppCompatActivity() {
                 b.btnDownload.isEnabled = true
                 refreshLangStatus()
                 if (err != null) {
-                    Toast.makeText(this, "ডাউনলোড ব্যর্থ: ${err.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.err_download_failed, err.message ?: ""), Toast.LENGTH_LONG).show()
                 }
             }
         }

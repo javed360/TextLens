@@ -20,7 +20,7 @@ class TextLensApp : Application() {
             // MIN importance: no status-bar icon, no sound, only a quiet line in the shade.
             nm.createNotificationChannel(
                 NotificationChannel(CHANNEL_ID, "TextLens", NotificationManager.IMPORTANCE_MIN).apply {
-                    description = "বাবল চালু থাকার সময় সার্ভিস নোটিফিকেশন"
+                    description = LocaleHelper.str(this@TextLensApp, R.string.channel_desc)
                     setShowBadge(false)
                 }
             )

@@ -35,7 +35,8 @@ import kotlin.math.hypot
 class BubbleService : Service() {
 
     private lateinit var wm: WindowManager
-    private lateinit var themed: Context
+    /** Fresh each time, so a changed language or theme shows up in the next panel that opens. */
+    private val themed: Context get() = ThemeManager.themedContext(this)
     private val main = Handler(Looper.getMainLooper())
 
     private var bubble: View? = null
@@ -54,7 +55,6 @@ class BubbleService : Service() {
     override fun onCreate() {
         super.onCreate()
         wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        themed = ThemeManager.themedContext(this)
         instance = this
         running = true
         BubbleTileService.requestRefresh(this)
@@ -82,9 +82,9 @@ class BubbleService : Service() {
         )
         val n = Notification.Builder(this, TextLensApp.CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_tile_bubble)
-            .setContentTitle("TextLens চালু আছে")
+            .setContentTitle(str(R.string.notif_title_running))
             .setOngoing(true)
-            .addAction(Notification.Action.Builder(null, "বন্ধ করুন", stop).build())
+            .addAction(Notification.Action.Builder(null, str(R.string.notif_action_stop), stop).build())
             .build()
         if (Build.VERSION.SDK_INT >= 34) {
             startForeground(NOTIF_ID, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
@@ -296,12 +296,13 @@ class BubbleService : Service() {
                     if (bmp != null) showSelection(bmp, mode)
                     else {
                         setBubbleVisible(true)
-                        toast("স্ক্রিনশট নেওয়া যায়নি (এই স্ক্রিনটা সুরক্ষিত হতে পারে)")
+                        toast(str(R.string.toast_capture_protected))
                     }
                 }
             }, 180)
         } else {
             // Fallback: system screen-capture dialog (shown every time).
+            toast(str(R.string.toast_enable_a11y))
             // Start the activity while the bubble window is still visible (Android only allows
             // background activity starts while an overlay window is showing), then hide the bubble.
             startActivity(
@@ -358,25 +359,26 @@ class BubbleService : Service() {
     private fun runOcr(b: OverlaySelectionBinding) {
         val crop = b.selectionView.cropSelection()
         if (crop == null) {
-            toast(getString(R.string.result_empty))
+            toast(str(R.string.result_empty))
             return
         }
         b.progressOverlay.visibility = View.VISIBLE
         val app = applicationContext
         thread {
             try {
-                OcrHelper.ensureData(app) { msg -> main.post { b.progressText.text = msg } }
-                main.post { b.progressText.setText(R.string.camera_recognizing) }
-                val text = OcrHelper.recognize(app, crop)
+                val text = OcrEngine.recognize(app, crop, enhance = false) { msg ->
+                    main.post { b.progressText.text = msg }
+                }
                 main.post {
                     closeSelection()
                     setBubbleVisible(true)
                     showResult(text)
+                    toast(OcrEngine.lastInfo)
                 }
             } catch (t: Throwable) {
                 main.post {
                     b.progressOverlay.visibility = View.GONE
-                    toast("OCR ব্যর্থ: ${t.message}")
+                    toast(str(R.string.err_ocr_failed, t.message ?: ""))
                 }
             }
         }
@@ -387,7 +389,7 @@ class BubbleService : Service() {
     private fun showResult(text: String) {
         closeResult()
         val b = OverlayResultBinding.inflate(LayoutInflater.from(themed))
-        b.tvText.text = text.ifBlank { getString(R.string.result_empty) }
+        b.tvText.text = text.ifBlank { str(R.string.result_empty) }
         b.tvText.movementMethod = android.text.method.ScrollingMovementMethod()
         b.tvTranslated.movementMethod = android.text.method.ScrollingMovementMethod()
         when (Prefs.targetLang(this)) {
@@ -410,14 +412,14 @@ class BubbleService : Service() {
             Prefs.setTargetLang(this, target)
             b.progress.visibility = View.VISIBLE
             b.btnTranslate.isEnabled = false
-            TranslateHelper.translate(text, target) { r ->
+            TranslateHelper.translate(this, text, target) { r ->
                 b.progress.visibility = View.GONE
                 b.btnTranslate.isEnabled = true
                 r.onSuccess {
                     b.tvTranslated.text = it
                     b.boxTranslated.visibility = View.VISIBLE
                 }.onFailure {
-                    toast("অনুবাদ ব্যর্থ। প্রথমবার ভাষার মডেল নামাতে ইন্টারনেট লাগে।")
+                    toast(str(R.string.err_translate_failed))
                 }
             }
         }
@@ -448,15 +450,17 @@ class BubbleService : Service() {
     private fun copy(text: String) {
         val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         cm.setPrimaryClip(ClipData.newPlainText("TextLens", text))
-        toast(getString(R.string.copied_toast))
+        toast(str(R.string.copied_toast))
     }
 
     private fun share(text: String) {
         val send = Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text)
         startActivity(
-            Intent.createChooser(send, getString(R.string.btn_share)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            Intent.createChooser(send, str(R.string.btn_share)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         )
     }
+
+    private fun str(id: Int, vararg a: Any): String = LocaleHelper.str(this, id, *a)
 
     private fun toast(msg: String) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 

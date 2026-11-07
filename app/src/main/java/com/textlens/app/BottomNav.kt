@@ -9,9 +9,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 /** Puts a Home / Permissions / Settings bar at the bottom of a screen, like other apps. */
 object BottomNav {
-    val HOME = R.id.nav_home
-    val PERMISSIONS = R.id.nav_permissions
-    val SETTINGS = R.id.nav_settings
+    const val HOME = R.id.nav_home
+    const val PERMISSIONS = R.id.nav_permissions
+    const val SETTINGS = R.id.nav_settings
 
     fun attach(a: Activity, content: View, selected: Int) {
         val root = LinearLayout(a).apply { orientation = LinearLayout.VERTICAL }

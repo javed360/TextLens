@@ -20,7 +20,7 @@ import java.util.concurrent.Executors
  * Pick one or more images (in order), combine them into one A4 PDF, then let the user
  * save it anywhere (Save) or send it to another app (Share). Works fully offline.
  */
-class ImageToPdfActivity : AppCompatActivity() {
+class ImageToPdfActivity : BaseActivity() {
 
     private lateinit var b: ActivityImageToPdfBinding
     private val worker = Executors.newSingleThreadExecutor()
@@ -33,7 +33,7 @@ class ImageToPdfActivity : AppCompatActivity() {
         pdfFile = null
         b.btnSave.isEnabled = false
         b.btnShare.isEnabled = false
-        b.tvCount.text = "${uris.size}টি ছবি নির্বাচিত"
+        b.tvCount.text = getString(R.string.img_count, uris.size)
         b.btnBuild.isEnabled = true
     }
 
@@ -45,7 +45,7 @@ class ImageToPdfActivity : AppCompatActivity() {
                 contentResolver.openOutputStream(uri)!!.use { out -> src.inputStream().use { it.copyTo(out) } }
                 runOnUiThread { Toast.makeText(this, R.string.pdf_saved, Toast.LENGTH_SHORT).show() }
             } catch (t: Throwable) {
-                runOnUiThread { Toast.makeText(this, "সংরক্ষণ ব্যর্থ: ${t.message}", Toast.LENGTH_LONG).show() }
+                runOnUiThread { Toast.makeText(this, getString(R.string.err_save_failed, t.message ?: ""), Toast.LENGTH_LONG).show() }
             }
         }
     }
@@ -80,13 +80,13 @@ class ImageToPdfActivity : AppCompatActivity() {
                     b.btnBuild.isEnabled = true
                     b.btnSave.isEnabled = true
                     b.btnShare.isEnabled = true
-                    b.tvCount.text = "PDF তৈরি হয়েছে (${list.size} পৃষ্ঠা)"
+                    b.tvCount.text = getString(R.string.img_pdf_done, list.size)
                 }
             } catch (t: Throwable) {
                 runOnUiThread {
                     b.progress.visibility = View.GONE
                     b.btnBuild.isEnabled = true
-                    Toast.makeText(this, "PDF বানানো যায়নি: ${t.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.err_pdf_build, t.message ?: ""), Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -100,7 +100,7 @@ class ImageToPdfActivity : AppCompatActivity() {
         val doc = PdfDocument()
         try {
             uris.forEachIndexed { i, uri ->
-                val bmp = decodeScaled(uri, 2000) ?: throw IllegalStateException("ছবি ${i + 1} পড়া যায়নি")
+                val bmp = decodeScaled(uri, 2000) ?: throw IllegalStateException(getString(R.string.err_image_read, i + 1))
                 val info = PdfDocument.PageInfo.Builder(pageW, pageH, i + 1).create()
                 val page = doc.startPage(info)
                 val canvas: Canvas = page.canvas

@@ -22,7 +22,7 @@ import java.util.concurrent.Executors
  * screen (copy / translate / share). If a page has no text layer (scanned book) it is rendered
  * and read with OCR instead.
  */
-class PdfTextActivity : AppCompatActivity() {
+class PdfTextActivity : BaseActivity() {
 
     private lateinit var b: ActivityPdfBinding
     private val worker = Executors.newSingleThreadExecutor()
@@ -67,7 +67,7 @@ class PdfTextActivity : AppCompatActivity() {
             } catch (t: Throwable) {
                 runOnUiThread {
                     busy(false)
-                    Toast.makeText(this, "PDF খোলা যায়নি: ${t.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, getString(R.string.err_pdf_open, t.message ?: ""), Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -76,7 +76,7 @@ class PdfTextActivity : AppCompatActivity() {
     private fun show(index: Int) {
         if (pages == 0) return
         page = index.coerceIn(0, pages - 1)
-        b.tvPage.text = "পৃষ্ঠা ${page + 1} / $pages"
+        b.tvPage.text = getString(R.string.pdf_page_of, page + 1, pages)
         b.tvText.text = ""
         busy(true)
         val d = doc ?: return
@@ -100,7 +100,6 @@ class PdfTextActivity : AppCompatActivity() {
     /** Scanned page: render it and run offline OCR. */
     private fun ocrPage(p: Int): String = try {
         val app = applicationContext
-        OcrHelper.ensureData(app) { msg -> runOnUiThread { b.tvText.text = msg } }
         val pfd = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
         PdfRenderer(pfd).use { r ->
             r.openPage(p).use { pg ->
@@ -110,7 +109,7 @@ class PdfTextActivity : AppCompatActivity() {
                 )
                 bmp.eraseColor(Color.WHITE)
                 pg.render(bmp, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY)
-                OcrHelper.recognize(app, bmp)
+                OcrEngine.recognize(app, bmp, enhance = true) { msg -> runOnUiThread { b.tvText.text = msg } }
             }
         }
     } catch (t: Throwable) {

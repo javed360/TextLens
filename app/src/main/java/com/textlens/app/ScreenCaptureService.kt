@@ -33,7 +33,7 @@ class ScreenCaptureService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val n = Notification.Builder(this, TextLensApp.CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_tile_bubble)
-            .setContentTitle("স্ক্রিনশট নেওয়া হচ্ছে")
+            .setContentTitle(LocaleHelper.str(this, R.string.notif_taking_screenshot))
             .build()
         if (Build.VERSION.SDK_INT >= 29) {
             startForeground(NOTIF_ID, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION)
